@@ -90,6 +90,7 @@ const handleFilterChange = (newFilter: string) => {
 const clearSearch = () => {
   search.value = null
   filterValue.value = ''
+  anotherFilterValue.value = ''
   fetchRecipes()
 }
 
