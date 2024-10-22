@@ -6,7 +6,7 @@ import CartButton from './CartRecipes/CartButton.vue'
 
 <template>
   <header
-    class="flex justify-between items-center w-full h-16 px-5 shadow-lg border-b border-foreground/30 sticky top-0 z-[50] bg-background/70 backdrop-blur-md"
+    class="flex justify-between items-center w-full h-16 px-5 shadow-lg border-b border-foreground/10 sticky top-0 z-[50] bg-foreground/10 backdrop-blur-md"
   >
     <RouterLink to="/">
       <img alt="Vue logo" src="@/assets/logo.svg" class="w-10 h-10" />

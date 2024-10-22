@@ -14,6 +14,7 @@ import SearchBarTemplate from '../template/SearchBarTemplate.vue'
 import { Button } from '../ui/button'
 import FilterButton from '../template/button/FilterButton.vue'
 import { toast } from 'vue-sonner'
+import Badge from '../ui/badge/Badge.vue'
 
 const recipes = ref<Recipe[]>([])
 const isLoading = ref(true)
@@ -133,58 +134,93 @@ onMounted(fetchRecipes)
   </div>
 
   <section v-else>
-    <div class="w-full flex justify-end items-center py-5 gap-2">
-      <FilterButton
-        :filterValue="filterValue"
-        :anotherFilterValue="anotherFilterValue"
-        @update:filterValue="handleFilterChange"
-        @update:anotherFilterValue="handleAnotherFilterChange"
-        @clearSearch="clearSearch"
-      />
-      <SearchBarTemplate
-        :search="search || ''"
-        @search="handleSearch"
-        @clearSearch="clearSearch"
-      />
-    </div>
     <div
-      class="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
+      class="w-full flex max-lg:flex-col justify-center items-start gap-5 relative"
     >
-      <div v-for="recipe in recipes" :key="recipe.name" class="w-full h-full">
-        <div
-          class="w-full flex flex-col items-center justify-center py-7 px-5 shadow-lg rounded-md border border-foreground/10 gap-4 bg-foreground/5 overflow-hidden"
-        >
-          <div
-            class="w-[99%] h-[14em] rounded-lg overflow-hidden cursor-pointer"
+      <div
+        class="w-full flex flex-col flex-[0.7] max-lg:flex-row sticky top-20 justify-end items-start py-5 gap-2 bg-foreground/10 backdrop-blur-md shadow-lg px-4 rounded-lg z-50"
+      >
+        <div class="flex gap-2">
+          <Badge
+            v-if="filterValue"
+            variant="default"
+            class="text-[12px] font-medium"
           >
-            <RouterLink :to="`/recipe-detail/${slugify(recipe.name)}`">
-              <img
-                :src="
-                  recipe.image && recipe.image.length > 0 ? recipe.image[0] : ''
-                "
-                :alt="recipe.name"
-                class="w-full h-full object-cover rounded-lg transition-all duration-300 hover:scale-110"
-              />
-            </RouterLink>
+            {{ filterValue }}
+          </Badge>
+
+          <Badge
+            v-if="anotherFilterValue"
+            variant="default"
+            class="text-[12px] font-medium"
+          >
+            {{ anotherFilterValue }}
+          </Badge>
+
+          <Badge
+            v-if="anotherFilterValue || filterValue"
+            @click="clearSearch"
+            variant="destructive"
+            class="text-[12px] font-medium cursor-pointer"
+          >
+            x Clear Filters
+          </Badge>
+        </div>
+        <FilterButton
+          :filterValue="filterValue"
+          :anotherFilterValue="anotherFilterValue"
+          @update:filterValue="handleFilterChange"
+          @update:anotherFilterValue="handleAnotherFilterChange"
+          @clearSearch="clearSearch"
+        />
+
+        <SearchBarTemplate
+          :search="search || ''"
+          @search="handleSearch"
+          @clearSearch="clearSearch"
+        />
+      </div>
+      <div
+        class="w-full flex-[4] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
+      >
+        <div v-for="recipe in recipes" :key="recipe.name" class="w-full h-full">
+          <div
+            class="w-full flex flex-col items-center justify-center py-7 px-5 shadow-lg rounded-md border border-foreground/10 gap-4 bg-foreground/5 overflow-hidden"
+          >
+            <div
+              class="w-[99%] h-[14em] rounded-lg overflow-hidden cursor-pointer"
+            >
+              <RouterLink :to="`/recipe-detail/${slugify(recipe.name)}`">
+                <img
+                  :src="
+                    recipe.image && recipe.image.length > 0
+                      ? recipe.image[0]
+                      : ''
+                  "
+                  :alt="recipe.name"
+                  class="w-full h-full object-cover rounded-lg transition-all duration-300 hover:scale-110"
+                />
+              </RouterLink>
+            </div>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger class="cursor-pointer">
+                  <h2 class="text-2xl font-medium text-center line-clamp-1">
+                    {{ recipe.name }}
+                  </h2>
+                </TooltipTrigger>
+                <TooltipContent class="bg-foreground text-background">
+                  <p>{{ recipe.name }}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+
+            <p class="text-sm text-center line-clamp-3 cursor-default">
+              {{ recipe.description }}
+            </p>
+
+            <BookmarkButton :recipe="recipe" />
           </div>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger class="cursor-pointer">
-                <h2 class="text-2xl font-medium text-center line-clamp-1">
-                  {{ recipe.name }}
-                </h2>
-              </TooltipTrigger>
-              <TooltipContent class="bg-foreground text-background">
-                <p>{{ recipe.name }}</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-
-          <p class="text-sm text-center line-clamp-3 cursor-default">
-            {{ recipe.description }}
-          </p>
-
-          <BookmarkButton :recipe="recipe" />
         </div>
       </div>
     </div>
