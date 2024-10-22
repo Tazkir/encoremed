@@ -135,12 +135,14 @@ onMounted(fetchRecipes)
 
   <section v-else>
     <div
-      class="w-full flex max-lg:flex-col justify-center items-start gap-5 relative"
+      class="w-full flex max-xl:flex-col justify-center items-start gap-5 relative"
     >
       <div
-        class="w-full flex flex-col flex-[0.7] max-lg:flex-row sticky top-20 justify-end items-start py-5 gap-2 bg-foreground/10 backdrop-blur-md shadow-lg px-4 rounded-lg z-50"
+        class="w-full flex flex-col flex-[0.7] max-xl:flex-row sticky top-20 justify-end items-start py-5 gap-2 bg-foreground/10 backdrop-blur-md shadow-lg px-4 rounded-lg z-20"
       >
-        <div class="flex gap-2">
+        <div
+          class="max-sm:hidden flex flex-wrap justify-center items-center gap-2"
+        >
           <Badge
             v-if="filterValue"
             variant="default"

@@ -17,6 +17,7 @@ export const categories = [
   { value: 'salsas', label: 'Salsas' },
   { value: 'vegetarian', label: 'Vegetarian' },
   { value: 'dairy free', label: 'Dairy Free' },
+  { value: 'pasta', label: 'Pasta' },
 ]
 
 export const Ingredients = [
