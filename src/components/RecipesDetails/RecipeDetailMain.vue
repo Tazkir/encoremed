@@ -11,8 +11,6 @@ const route = useRoute()
 const unslug = ref(route.params.slug as string)
 const slug = ref(unslugify(unslug.value))
 
-console.log(slug.value)
-
 const recipes = ref<Recipe[]>([])
 const isLoading = ref(true)
 const error = ref<string | null>(null)

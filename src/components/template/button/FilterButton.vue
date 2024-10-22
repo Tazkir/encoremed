@@ -16,10 +16,18 @@ defineProps<{
   anotherFilterValue: string
 }>()
 
-const emit = defineEmits(['update:filterValue', 'clearSearch'])
+const emit = defineEmits([
+  'update:filterValue',
+  'update:anotherFilterValue',
+  'clearSearch',
+])
 
 const handleFilterChange = (newValue: string) => {
   emit('update:filterValue', newValue)
+}
+
+const handleAnotherFilterChange = (newValue: string) => {
+  emit('update:anotherFilterValue', newValue)
 }
 
 const clearSearch = () => {
@@ -47,7 +55,7 @@ const clearSearch = () => {
       <DropdownMenuItem as-child>
         <AnotherFilterBarTemplate
           :filterValue="anotherFilterValue"
-          @update:filterValue="handleFilterChange"
+          @update:filterValue="handleAnotherFilterChange"
         />
       </DropdownMenuItem>
       <DropdownMenuItem>

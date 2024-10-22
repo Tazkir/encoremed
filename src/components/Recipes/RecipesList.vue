@@ -13,7 +13,7 @@ import { slugify } from '@/lib/slugify'
 import SearchBarTemplate from '../template/SearchBarTemplate.vue'
 import { Button } from '../ui/button'
 import FilterButton from '../template/button/FilterButton.vue'
-import { Ingredients } from '@/lib/utils/data'
+import { toast } from 'vue-sonner'
 
 const recipes = ref<Recipe[]>([])
 const isLoading = ref(true)
@@ -51,27 +51,31 @@ const fetchRecipes = async () => {
             recipe.recipeCategory
               .toLowerCase()
               .replace(/\s/g, '')
-              .includes(filterValue.value.toLowerCase().replace(/\s/g, ''))))
+              .includes(filterValue.value.toLowerCase().replace(/\s/g, '')))) ||
+        (Array.isArray(recipe.recipeCategory) &&
+          recipe.recipeCategory.some(
+            category =>
+              category
+                .toLowerCase()
+                .includes(filterValue.value.toLowerCase()) ||
+              category
+                .toLowerCase()
+                .replace(/\s/g, '')
+                .includes(filterValue.value.toLowerCase().replace(/\s/g, '')),
+          ))
 
       const matchesIngredient =
         !anotherFilterValue.value ||
-        (Array.isArray(recipe.recipeIngredient) &&
-          recipe.recipeIngredient.filter(ingredient => {
-            const ingredientWords = ingredient.toLowerCase().split(/\s+/)
-            return ingredientWords.some(
-              word =>
-                word.includes(anotherFilterValue.value.toLowerCase()) ||
-                Ingredients.some(keyword =>
-                  word.includes(keyword.value.toLowerCase()),
-                ),
-            )
-          }))
+        recipe.recipeIngredient
+          .join(', ')
+          .toLowerCase()
+          .includes(anotherFilterValue.value.toLowerCase())
 
       return matchesSearch && matchesCategory && matchesIngredient
     })
   } catch (err) {
     console.error('Error fetching recipes:', err)
-    error.value = 'Failed to fetch recipes. Please try again later.'
+    toast.error(`Failed to fetch recipes. Please try again later.`)
   } finally {
     isLoading.value = false
   }
@@ -84,6 +88,11 @@ const handleSearch = (newSearch: string) => {
 
 const handleFilterChange = (newFilter: string) => {
   filterValue.value = newFilter
+  fetchRecipes()
+}
+
+const handleAnotherFilterChange = (newFilter: string) => {
+  anotherFilterValue.value = newFilter
   fetchRecipes()
 }
 
@@ -110,7 +119,7 @@ onMounted(fetchRecipes)
       <Skeleton class="w-[100%] h-[29em] bg-foreground/40" />
     </div>
   </div>
-  <div v-else-if="error">{{ error }}</div>
+
   <div
     v-else-if="recipes.length === 0"
     class="w-full flex flex-col items-center justify-center gap-4"
@@ -129,6 +138,7 @@ onMounted(fetchRecipes)
         :filterValue="filterValue"
         :anotherFilterValue="anotherFilterValue"
         @update:filterValue="handleFilterChange"
+        @update:anotherFilterValue="handleAnotherFilterChange"
         @clearSearch="clearSearch"
       />
       <SearchBarTemplate

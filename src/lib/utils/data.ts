@@ -1,7 +1,13 @@
 export const categories = [
   { value: 'drink', label: 'Drink' },
   { value: 'breakfast', label: 'Breakfast' },
+  { value: 'snack', label: 'Snack' },
+  { value: 'appetizer', label: 'Appetizer' },
+  { value: 'dinner', label: 'Dinner' },
+  { value: 'main course', label: 'Main Course' },
   { value: 'side dish', label: 'Side Dish' },
+  { value: 'brunch', label: 'Brunch' },
+  { value: 'breads', label: 'Breads' },
   { value: 'soup', label: 'Soup' },
   { value: 'holiday cookies', label: 'Holiday Cookies' },
   { value: 'desserts', label: 'Desserts' },

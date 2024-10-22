@@ -21,7 +21,7 @@ import { Ingredients } from '@/lib/utils/data'
 const data = Ingredients
 const placeholder = 'Filter by ingredient...'
 const open = ref(false)
-const searchQuery = ref('')
+const searchQuery = ref<string | ''>('')
 
 defineProps<{
   filterValue: string
@@ -41,7 +41,7 @@ const handleSelect = (value: string) => {
         variant="outline"
         role="combobox"
         :aria-expanded="open"
-        class="w-[100%] justify-center"
+        class="w-[200px] justify-between"
       >
         {{
           filterValue
@@ -54,7 +54,7 @@ const handleSelect = (value: string) => {
     <PopoverContent class="w-[200px] p-0">
       <Command>
         <CommandInput
-          v-model="searchQuery"
+          :modelValue="searchQuery"
           :placeholder="`Search ${placeholder || 'option'}...`"
         />
         <CommandEmpty>No option found.</CommandEmpty>
