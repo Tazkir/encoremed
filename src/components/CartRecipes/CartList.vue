@@ -5,6 +5,7 @@ import { useSavedRecipesStore } from '@/stores/recipes'
 import { useRouter } from 'vue-router'
 import { ScrollArea } from '../ui/scroll-area'
 import BookmarkButton from '../template/button/BookmarkButton.vue'
+import { BadgeHelpIcon } from 'lucide-vue-next'
 
 const router = useRouter()
 
@@ -14,7 +15,23 @@ const recipes: Recipe[] = store.getSavedRecipes
 </script>
 
 <template>
+  <div
+    v-if="recipes.length === 0"
+    class="w-full flex flex-col gap-5 justify-center items-center"
+  >
+    <BadgeHelpIcon class="w-20 h-20" />
+    <h1 class="text-center text-2xl font-semibold">
+      No saved recipes found, go to recipes page to save recipes
+    </h1>
+    <RouterLink
+      to="/recipes"
+      class="text-green-500 underline underline-offset-4 text-lg font-semibold"
+      >Go to recipes page
+    </RouterLink>
+  </div>
+
   <ScrollArea
+    v-else
     class="w-full h-[50em] rounded-md max-sm:ml-3 max-sm:h-[35em] shadow-lg"
   >
     <div class="w-full grid grid-cols-2 gap-5">

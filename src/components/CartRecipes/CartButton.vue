@@ -36,7 +36,7 @@ watch(
       </Button>
     </SheetTrigger>
     <SheetContent
-      class="w-[400px] sm:w-[100%] flex flex-col justify-center items-center gap-5"
+      class="w-[400px] sm:w-[100%] flex flex-col justify-start items-center gap-5"
     >
       <SheetHeader>
         <SheetTitle>Your Saved Recipes</SheetTitle>
